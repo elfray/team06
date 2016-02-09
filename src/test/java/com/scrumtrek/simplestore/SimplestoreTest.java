@@ -17,7 +17,7 @@ public class SimplestoreTest {
         Customer c = new Customer("Cust");
         c.addRental(new Rental(m,4));
 
-        String stm = c.printStatement();
+        String stm = c.printStatement(Customer.ReportFormat.PLAIN);
 
         assertEquals("Movie price codes are not equal", "Rental record for Cust\n" +
                 "\tXXX\t3.00\n" +
@@ -32,7 +32,7 @@ public class SimplestoreTest {
         Customer c = new Customer("Cust");
         c.addRental(new Rental(m,6));
 
-        String stm = c.printStatement();
+        String stm = c.printStatement(Customer.ReportFormat.PLAIN);
 
         assertEquals("Movie price codes are not equal", "Rental record for Cust\n" +
                 "\tXXX\t2.40\n" +

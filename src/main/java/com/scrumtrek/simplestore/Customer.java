@@ -48,10 +48,10 @@ public class Customer {
 		}
 	}
 
-	public String printStatement() {
+	public String printStatement(ReportFormat format) {
 		String result = "Rental record for " + customerName + "\n";
 		for (Rental rental : movieRentals) {
-			result += printMovieDetails(rental, evaluateRentalAmount(rental));
+			result += printMovieDetails(format, rental, evaluateRentalAmount(rental));
 		}
 		evaluateStatement();
 		result += addFooterLines(totalAmount, frequentRenterPoints);
