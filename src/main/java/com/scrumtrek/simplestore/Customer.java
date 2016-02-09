@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Customer {
+
+	public enum ReportFormat {PLAIN, HTML}
 	public static final int REGULAR_PRICE = 2;
 	public static final int REGULAR_DAYS_LIMIT = 2;
 	public static final double REGULAR_COEFFICIENT = 1.5;
@@ -68,8 +70,18 @@ public class Customer {
 		return frequentRenterPoints;
 	}
 
-	private String printMovieDetails(Rental rental, double thisAmount) {
-		return "\t" + rental.getMovie().getTitle() + "\t" + String.format("%.2f", thisAmount) + "\n";
+	private String printMovieDetails(ReportFormat format, Rental rental, double thisAmount) {
+		String result;
+		switch (format)
+		{
+			default:
+				result = "\t" + rental.getMovie().getTitle() + "\t" + String.format("%.2f", thisAmount) + "\n";
+				break;
+			case HTML:
+				result = "<p><b>" + rental.getMovie().getTitle() + "</b>: " + String.format("%.2f", thisAmount) + "</p>";
+				break;
+		}
+		return result;
 	}
 
 	private String addFooterLines(double totalAmount, int frequentRenterPoints) {

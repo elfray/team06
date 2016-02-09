@@ -25,6 +25,8 @@ public class SimplestoreTest {
                 "You earned 1 frequent renter points.", stm);
         //assertEquals("Movie titles are not equal", MOVIE_TITLE, movie.getTitle());
     }
+
+    @org.junit.Test
     public void testXXXMovie2() {
         XXXMovie m = new XXXMovie("XXX");
         Customer c = new Customer("Cust");
