@@ -1,5 +1,9 @@
 package com.scrumtrek.simplestore;
 
+import com.scrumtrek.simplestore.movies.XXXMovie;
+
+import static junit.framework.TestCase.assertEquals;
+
 /**
  * Created by Admin on 08.02.2016.
  */
@@ -7,8 +11,33 @@ package com.scrumtrek.simplestore;
 public class SimplestoreTest {
 
     final String MOVIE_TITLE = "movie_name";
-    final PriceCodes MOVIE_PRICE_CODE = PriceCodes.CHILDRENS;
+    @org.junit.Test
+    public void testXXXMovie() {
+        XXXMovie m = new XXXMovie("XXX");
+        Customer c = new Customer("Cust");
+        c.addRental(new Rental(m,4));
 
+        String stm = c.printStatement();
+
+        assertEquals("Movie price codes are not equal", "Rental record for Cust\n" +
+                "\tXXX\t3.00\n" +
+                "Amount owed is 3.00\n" +
+                "You earned 1 frequent renter points.", stm);
+        //assertEquals("Movie titles are not equal", MOVIE_TITLE, movie.getTitle());
+    }
+    public void testXXXMovie2() {
+        XXXMovie m = new XXXMovie("XXX");
+        Customer c = new Customer("Cust");
+        c.addRental(new Rental(m,6));
+
+        String stm = c.printStatement();
+
+        assertEquals("Movie price codes are not equal", "Rental record for Cust\n" +
+                "\tXXX\t2.40\n" +
+                "Amount owed is 2.40\n" +
+                "You earned 1 frequent renter points.", stm);
+        //assertEquals("Movie titles are not equal", MOVIE_TITLE, movie.getTitle());
+    }
 //todo - исправить тесты
 //    @org.junit.Test
 //    public void testMovieGetters() {

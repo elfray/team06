@@ -69,11 +69,11 @@ public class Customer {
 	}
 
 	private String printMovieDetails(Rental rental, double thisAmount) {
-		return "\t" + rental.getMovie().getTitle() + "\t" + thisAmount + "\n";
+		return "\t" + rental.getMovie().getTitle() + "\t" + String.format("%.2f", thisAmount) + "\n";
 	}
 
 	private String addFooterLines(double totalAmount, int frequentRenterPoints) {
-		String result = "Amount owed is " + totalAmount + "\n";
+		String result = "Amount owed is " + String.format("%.2f",totalAmount) + "\n";
 		result += "You earned " + frequentRenterPoints + " frequent renter points.";
 		return result;
 	}
