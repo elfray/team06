@@ -1,93 +1,48 @@
 package com.scrumtrek.simplestore;
 
+import com.scrumtrek.simplestore.movies.Movie;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Customer {
 
-	public enum ReportFormat {PLAIN, HTML}
-	public static final int REGULAR_PRICE = 2;
-	public static final int REGULAR_DAYS_LIMIT = 2;
-	public static final double REGULAR_COEFFICIENT = 1.5;
-	public static final int NEW_RELEASE_PRICE = 3;
-	public static final double CHILDREN_PRICE = 1.5;
-	public static final int CHILDREN_DAYS_LIMIT = 3;
-	public static final double CHILDREN_COEFFICIENT = 1.5;
+	public String getCustomerName() {
+		return customerName;
+	}
+
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
+	}
+
+	public List<Rental> getMovieRentals() {
+		return movieRentals;
+	}
+
+	public void setMovieRentals(List<Rental> movieRentals) {
+		this.movieRentals = movieRentals;
+	}
 
 	private String customerName;
 	private List<Rental> movieRentals = new ArrayList<>();
-	private double totalAmount;
-	private int frequentRenterPoints;
-
 
 	public Customer(String customerName) {
 		this.customerName = customerName;
 	}
 
-	public String getCustomerName() {
-		return customerName;
-	}
+	public  ReportStatement getStatement() //todo extract into interface
+	{
+		ReportStatement stm = new ReportStatement("Customer:" + this.getCustomerName(),0);
+		double rentAmount = 0;
 
-
-	public void addRental(Rental arg){
-		movieRentals.add(arg);
-	}
-
-	public void evaluateStatement() {
-		totalAmount = 0;
-		frequentRenterPoints = 0;
-
-		for(Rental rental: movieRentals) {
-			double thisAmount = evaluateRentalAmount(rental);
-
-			frequentRenterPoints++;
-
-			frequentRenterPoints = addBonusForTwoDayNewRelease(rental);
-
-			totalAmount += thisAmount;
+		for (Rental m : movieRentals ) {
+			ReportStatement ms = m.getStatement();
+			rentAmount += ms.getAmount();
+			stm.getChildren().add(ms);
 		}
-	}
+		stm.setAmount(rentAmount);
 
-	public String printStatement(ReportFormat format) {
-		String result = "Rental record for " + customerName + "\n";
-		for (Rental rental : movieRentals) {
-			result += printMovieDetails(format, rental, evaluateRentalAmount(rental));
-		}
-		evaluateStatement();
-		result += addFooterLines(totalAmount, frequentRenterPoints);
-		return result;
-	}
-
-	private double evaluateRentalAmount(Rental rental) {
-		return rental.getMovie().evaluateAmount(rental);
-	}
-
-	private int addBonusForTwoDayNewRelease(Rental each) {
-		//todo применить в new release movie
-//		if ((each.getMovie().getPrice() == PriceCodes.NEW_RELEASE) && (each.getDaysRented() > 1)) {
-//            frequentRenterPoints ++;
-//        }
-		return frequentRenterPoints;
-	}
-
-	private String printMovieDetails(ReportFormat format, Rental rental, double thisAmount) {
-		String result;
-		switch (format)
-		{
-			default:
-				result = "\t" + rental.getMovie().getTitle() + "\t" + String.format("%.2f", thisAmount) + "\n";
-				break;
-			case HTML:
-				result = "<p><b>" + rental.getMovie().getTitle() + "</b>: " + String.format("%.2f", thisAmount) + "</p>";
-				break;
-		}
-		return result;
-	}
-
-	private String addFooterLines(double totalAmount, int frequentRenterPoints) {
-		String result = "Amount owed is " + String.format("%.2f",totalAmount) + "\n";
-		result += "You earned " + frequentRenterPoints + " frequent renter points.";
-		return result;
+		return stm;
 	}
 }
 

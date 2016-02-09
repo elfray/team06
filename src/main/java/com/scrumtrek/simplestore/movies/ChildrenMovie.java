@@ -1,27 +1,23 @@
 package com.scrumtrek.simplestore.movies;
 
-import com.scrumtrek.simplestore.PricePolicy;
-import com.scrumtrek.simplestore.Rental;
+import com.scrumtrek.simplestore.ReportStatement;
 
 /**
  * Created by Admin on 08.02.2016.
  */
 public class ChildrenMovie extends Movie {
 
-    public static final double CHILDREN_PRICE = 1.5;
-    public static final int CHILDREN_DAYS_LIMIT = 3;
-    public static final double CHILDREN_COEFFICIENT = 1.5;
-
-    public ChildrenMovie(String title) {
-        super(title, new PricePolicy(CHILDREN_DAYS_LIMIT, CHILDREN_PRICE));
+    public ChildrenMovie(String title, double price, double longTermPrice, int dayThreshold) {
+        super(title, price, longTermPrice, dayThreshold);
     }
 
     @Override
-    public double evaluateAmount(Rental rental) {
+    public ReportStatement getStatement(int daysRented) {
         double thisAmount = getPrice();
-        if (rental.getDaysRented() > getDaysLimit()) {
-            thisAmount = (rental.getDaysRented() - getDaysLimit()) * CHILDREN_COEFFICIENT;
+        if (daysRented > getDayThreshold()) {
+            thisAmount = (daysRented - getDayThreshold()) * getPrice();
         }
-        return thisAmount;
+
+        return new ReportStatement("MovieName:" + this.getTitle(), thisAmount);
     }
 }

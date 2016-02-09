@@ -1,26 +1,57 @@
 package com.scrumtrek.simplestore.movies;
 
 import com.scrumtrek.simplestore.PricePolicy;
+import com.scrumtrek.simplestore.ReportStatement;
 
-public abstract class Movie implements PriceEvaluator {
-	private String m_Title;
-	protected PricePolicy policy;
+import java.beans.Statement;
 
-	public Movie(String title, PricePolicy policy) {
-		m_Title = title;
-		this.policy = policy;
+public abstract class Movie
+{
+	private String title;
+	private double price;
+
+	public double getLongTermPrice() {
+		return longTermPrice;
 	}
 
-	public double getPrice() {
-		return policy.getPrice();
+	public void setLongTermPrice(double longTermPrice) {
+		this.longTermPrice = longTermPrice;
 	}
 
-	public int getDaysLimit() {
-		return policy.getDays();
+	private double longTermPrice;
+	private int dayThreshold;
+
+	public Movie(String title, double price, double longTermPrice, int dayThreshold) {
+		this.title = title;
+		this.price = price;
+		this.longTermPrice = longTermPrice;
+		this.dayThreshold = dayThreshold;
 	}
 
 	public String getTitle() {
-		return m_Title;
+		return title;
 	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
+	public int getDayThreshold() {
+		return dayThreshold;
+	}
+
+	public void setDayThreshold(int dayThreshold) {
+		this.dayThreshold = dayThreshold;
+	}
+
+	public abstract ReportStatement getStatement(int daysRented);
 }
 
